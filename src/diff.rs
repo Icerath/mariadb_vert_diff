@@ -1,5 +1,8 @@
+#![allow(clippy::self_named_constructors)]
+
 use std::collections::HashSet;
 use std::fmt;
+
 
 pub struct Diff<'a> {
     added: Vec<&'a str>,
@@ -18,6 +21,8 @@ impl<'a> Diff<'a> {
 
 // Private Utility Methods
 impl<'a> Diff<'a> {
+    /// Gets the items in start but not in edit, and the items in edit but not in start.
+    /// Should be O(n) time complexity and O(n) extra space complexity
     fn diff_hash(start: Vec<&'a str>, edit: Vec<&'a str>) -> Self {
         let get_missing = |vec: Vec<&'a str>, set: HashSet<&'a str>| vec
             .iter()
