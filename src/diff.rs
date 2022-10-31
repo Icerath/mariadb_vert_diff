@@ -40,7 +40,6 @@ impl<'a> Diff<'a> {
         }
         let s = &text[linestart..cur - 1];
         if !s.contains("\n**") {
-            println!("{s}");
             rows.push(s);
         }
 
@@ -69,22 +68,22 @@ impl<'a> fmt::Display for Diff<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut output = vec![];
         if !self.added.is_empty() {
-            output.push(Self::format(&self.added, "> "));
+            output.push(Self::format(&self.added, '>'));
         }
         if !self.removed.is_empty() {
-            output.push(Self::format(&self.removed, "< "));
+            output.push(Self::format(&self.removed, '<'));
         }
         write!(f, "{}", output.join("\n\n").trim())
     }
 }
 
 impl<'a> Diff<'a> {
-    fn format(text: &[&str], start: &str) -> String {
+    fn format(text: &[&str], start: char) -> String {
         text.iter()
             .map(|s| {
                 s.trim()
                     .lines()
-                    .map(|line| start.to_string() + line + "\n")
+                    .map(|line| format!("{start} {line}\n"))
                     .collect()
             })
             .collect::<Vec<String>>()
